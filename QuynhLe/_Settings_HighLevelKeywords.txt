@@ -1,0 +1,273 @@
+*** Settings ***
+Resource          ../Variables/Variables.txt
+
+*** Keywords ***
+Check UI of Settings screen
+    Settings.Verify All Elements Exist
+    Settings.Verify All Elements Name    ${v_data[${v_testcaseID}]['${v_language}-title']}    ${v_data[${v_testcaseID}]['${v_language}-help']}    ${v_data[${v_testcaseID}]['${v_language}-access']}    ${v_data[${v_testcaseID}]['${v_language}-social']}    ${v_data[${v_testcaseID}]['${v_language}-profile']}    ${v_data[${v_testcaseID}]['${v_language}-history']}
+    ...    ${v_data[${v_testcaseID}]['${v_language}-notifications']}    ${v_data[${v_testcaseID}]['${v_language}-location']}    ${v_data[${v_testcaseID}]['${v_language}-contact mido']}    ${v_data[${v_testcaseID}]['${v_language}-terms and conditions']}    ${v_data[${v_testcaseID}]['${v_language}-logout']}
+
+Check UI of Notificaitons screen
+    Settings.Notifications_Verify All Elements Exist
+    Settings.Notifications_Verify All Elements Name    ${v_data[${v_testcaseID}]['${v_language}-title']}    ${v_data[${v_testcaseID}]['${v_language}-friend birthday']}    ${v_data[${v_testcaseID}]['${v_language}-friend join mido']}    ${v_data[${v_testcaseID}]['${v_language}-chat in group']}
+
+Navigates to Help menu
+    Settings.Click Help
+
+Navigates to Access menu
+    Settings.Click Access
+
+Navigates to Notificaitons Menu
+    Settings.Click Notifications
+
+Click 'Back' button
+    Settings.Click Back Button
+
+Navigate to Frequently Asked Quenstions screen
+    Settings.Help_Click Frequently Asked Questions
+
+From FAQ screen, click 'Close' button will navigate user to the Help screen
+    Settings.FAQ_Click Close Button
+
+Click 'Hamburber' menu to invoke Settings screen
+    Navigations.Click Hamburger Menu
+
+Navigates to Change Password screen
+    Settings.Click My Password Is
+
+Navigates to Contact screen
+    Settings.Click Contact Mido
+
+Check UI, verify App verison is correct on Contact screen
+    Element Name Should Be    ${Settings_ContactMido_Title}    ${v_data[${v_testcaseID}]['${v_language}-title']}
+    Element Name Should Be    ${Settings_ContactMido_CompanyName}    ${v_data[${v_testcaseID}]['${v_language}-company name']}
+    Element Name Should Be    ${Settings_ContactMido_Street}    ${v_data[${v_testcaseID}]['${v_language}-street']}
+    Element Name Should Be    ${Settings_ContactMido_Floor}    ${v_data[${v_testcaseID}]['${v_language}-floor']}
+    Element Name Should Be    ${Settings_ContactMido_Address}    ${v_data[${v_testcaseID}]['${v_language}-country']}
+    Element Name Should Be    ${Settings_ContactMido_EmailText}    ${v_data[${v_testcaseID}]['${v_language}-email support']}
+    Element Name Should Be    ${Settings_ContactMido_PhoneText}    ${v_data[${v_testcaseID}]['${v_language}-phone']}
+    ${currentAppVersion}=    Catenate    App version    ${v_appVersion}
+    Element Name Should Be    ${Settings_ContactMido_Version}    ${currentAppVersion}
+
+Verify Logout button works accordingly
+    Settings.Click Logout
+
+Verify email address on Profile screen should be matched with user's email address
+    Profile_Email Should Be Matched With User Email Address    ${v_data[${v_testcaseID}]['email address']}
+
+Disable notification when there is chat in groups
+    Settings.Notifications_Enable Or Disable Notifications    3    ${False}
+
+Enable notification when there is chat in groups
+    Settings.Notifications_Enable Or Disable Notifications    3    ${True}
+
+Disable notification when friend joins Mido
+    Settings.Notifications_Enable Or Disable Notifications    2    ${False}
+
+Enable notification when friend joins Mido
+    Settings.Notifications_Enable Or Disable Notifications    2    ${True}
+
+Disable notification when it's a friend's birthday
+    Settings.Notifications_Enable Or Disable Notifications    1    ${False}
+
+Enable notification when it's a friend's birthday
+    Settings.Notifications_Enable Or Disable Notifications    1    ${True}
+
+Verify notification when there is chat in groups is disabled
+    Settings.Notifications_Verify Notification Is Enable Or Disable    3    ${False}
+
+Verify notification when there is chat in groups is enabled
+    Settings.Notifications_Verify Notification Is Enable Or Disable    3    ${True}
+
+Verify notification when friend joins Mido is disabled
+    Settings.Notifications_Verify Notification Is Enable Or Disable    2    ${False}
+
+Verify notification when friend joins Mido is enabled
+    Settings.Notifications_Verify Notification Is Enable Or Disable    2    ${True}
+
+Verify notification when it's a friend's birthday is disabled
+    Settings.Notifications_Verify Notification Is Enable Or Disable    1    ${False}
+
+Verify notification when it's a friend's birthday is enabled
+    Settings.Notifications_Verify Notification Is Enable Or Disable    1    ${True}
+
+Input current password is less than 6 characters
+    Settings.Input Password    ${v_data[${v_testcaseID}]['current password']}
+
+Input current password
+    Settings.Input Password    ${v_data[${v_testcaseID}]['current password']}
+
+Verify error message on Change Password screen
+    Settings.Password_Verify Error Message    ${v_data[${v_testcaseID}]['${v_language}-error message title']}    ${v_data[${v_testcaseID}]['${v_language}-error message']}    ${v_data[${v_testcaseID}]['${v_language}-error message button']}
+
+Click 'Submit' button on Change Password screen
+    Settings.Password_Click Submit Button
+
+Input password confirmation on Change Pasword screen
+    Settings.Password - Input Password Confirmation    ${v_data[${v_testcaseID}]['password confirmation']}
+
+Verify description of Change Password screen
+    Settings.Password_Verify Description    ${v_data[${v_testcaseID}]['${v_language}-description']}
+
+Reseting password
+    Navigations.Click Hamburger Menu
+    Settings.Click Access
+    Settings.Click My Password Is
+    Settings.Input Password    ${v_data[${v_testcaseID}]['new password']}
+    Settings.Password_Click Next Button
+    Settings.Input Password    ${v_data[${v_testcaseID}]['current password']}
+    Settings.Password_Click Next Button
+    Settings.Input Password    ${v_data[${v_testcaseID}]['current password']}
+    Settings.Password_Click Next Button
+    Settings.Current Screen Is Access Screen
+
+Verify after changing password successfully
+    Settings.Current Screen Is Access Screen
+    Comment    Relogin account
+    Click 'Back' button
+    Click Logout
+    Start Screen.Click Log In Button
+    Log In.Log In Successfully And Close User Guide - Games    ${v_data[${v_testcaseID}]['email address']}    ${v_data[${v_testcaseID}]['new password']}
+
+Verify Terms And Conditions on Settings screen
+    Settings.TAC_Verify Terms And Conditions    ${v_data[${v_testcaseID}]['${v_language}-title']}    ${TermsAndConditions_TermsOfService}
+
+Update name and basic information
+    @{basic_info}=    Create List    ${v_data[${v_testcaseID}]['first name']}    ${v_data[${v_testcaseID}]['last name']}    ${v_data[${v_testcaseID}]['address1']}    ${v_data[${v_testcaseID}]['address2']}    ${v_data[${v_testcaseID}]['city']}
+    ...    ${v_data[${v_testcaseID}]['state']}    ${v_data[${v_testcaseID}]['postal code']}    ${v_data[${v_testcaseID}]['country']}
+    Settings.Input All Basic Information    @{basic_info}
+    @{expected}=    Settings.Get All Basic Information
+    Settings.Profile-Basic Information-Click Save button
+    Settings.Profile-Navigates To Basic Information Screen
+    @{current_info}=    Settings.Get All Basic Information
+    Lists Should Be Equal    ${current_info}    ${expected}    Current information '${current_info}' is different with expected information '${expected}'
+
+Verify full name of current user is displayed correctly
+    Settings.Profile-Verify Full Name Is Displayed    ${v_data[${v_testcaseID}]['first name']}    ${v_data[${v_testcaseID}]['last name']}
+
+Update basic information without inputting first name and last name
+    @{current_basic_infor}=    Settings.Get All Basic Information
+    ${temp_address}=    Generate Random String    8    [LOWER]
+    Settings.Input All Basic Information    \    \    ${temp_address}
+    Settings.Profile-Basic Information-Clear Basic Information    ${True}    ${True}
+    Settings.Profile-Basic Information-Click Save button
+    ${current_first_name}=    AppiumLibrary.Get Element Attribute    ${Settings_Profile_BasicInformation_FirstName}    value
+    Should Be Equal    ${current_first_name}    First Name *
+    ${current_last_name}=    AppiumLibrary.Get Element Attribute    ${Settings_Profile_BasicInformation_LastName}    value
+    Should Be Equal    ${current_last_name}    Last Name *
+    Settings.Click Back Button
+    Settings.Profile-Navigates To Basic Information Screen
+    @{expected}=    Settings.Get All Basic Information
+    Lists Should Be Equal    ${current_basic_infor}    ${expected}    Current information '${current_basic_infor}' is different with expected information '${expected}'
+
+User cannot update basic information without last name
+    @{current_basic_infor}=    Settings.Get All Basic Information
+    ${temp_address}=    Generate Random String    8    [LOWER]
+    Settings.Input All Basic Information    \    \    ${temp_address}
+    Settings.Profile-Basic Information-Clear Basic Information    \    ${True}
+    Settings.Profile-Basic Information-Click Save button
+    ${current_last_name}=    AppiumLibrary.Get Element Attribute    ${Settings_Profile_BasicInformation_LastName}    value
+    Should Be Equal    ${current_last_name}    Last Name *
+    Settings.Click Back Button
+    Settings.Profile-Navigates To Basic Information Screen
+    @{expected}=    Settings.Get All Basic Information
+    Lists Should Be Equal    ${current_basic_infor}    ${expected}    Current information '${current_basic_infor}' is different with expected information '${expected}'
+
+User cannot update basic information without first name
+    @{current_basic_infor}=    Settings.Get All Basic Information
+    ${temp_address}=    Generate Random String    8    [LOWER]
+    Settings.Input All Basic Information    \    \    ${temp_address}
+    Settings.Profile-Basic Information-Clear Basic Information    ${True}
+    Settings.Profile-Basic Information-Click Save button
+    ${current_last_name}=    AppiumLibrary.Get Element Attribute    ${Settings_Profile_BasicInformation_FirstName}    value
+    Should Be Equal    ${current_last_name}    First Name *
+    Settings.Click Back Button
+    Settings.Profile-Navigates To Basic Information Screen
+    @{expected}=    Settings.Get All Basic Information
+    Lists Should Be Equal    ${current_basic_infor}    ${expected}    Current information '${current_basic_infor}' is different with expected information '${expected}'
+
+Update basic information with invalid postal code
+    @{current_basic_infor}=    Settings.Get All Basic Information
+    ${postal_code}=    Generate Random String    3    [NUMBERS]
+    Settings.Input All Basic Information    \    \    \    \    \    ${EMPTY}
+    ...    ${postal_code}
+    Settings.Profile-Basic Information-Click Save button
+    Settings.Click Back Button
+    Settings.Profile-Navigates To Basic Information Screen
+    @{expected}=    Settings.Get All Basic Information
+    Lists Should Be Equal    ${current_basic_infor}    ${expected}    Current information '${current_basic_infor}' is different with expected information '${expected}'
+
+User cannot update basic information with first name and / or last name has more than 30 characters
+    @{current_basic_infor}=    Settings.Get All Basic Information
+    ${invalid_first_name}=    Generate Random String    31    [LOWER]
+    ${invalid_last_name}=    Generate Random String    40    [LOWER]
+    Settings.Input All Basic Information    ${invalid_first_name}    ${invalid_last_name}
+    Settings.Profile-Basic Information-Click Save button
+    ${current_first_name}=    AppiumLibrary.Get Element Attribute    ${Settings_Profile_BasicInformation_FirstName}    value
+    Should Be Equal    ${current_first_name}    ${invalid_first_name}
+    ${current_last_name}=    AppiumLibrary.Get Element Attribute    ${Settings_Profile_BasicInformation_LastName}    value
+    Should Be Equal    ${current_last_name}    ${invalid_last_name}
+    Settings.Click Back Button
+    Settings.Profile-Navigates To Basic Information Screen
+    @{expected}=    Settings.Get All Basic Information
+    Lists Should Be Equal    ${current_basic_infor}    ${expected}    Current information '${current_basic_infor}' is different with expected information '${expected}'
+
+User cannot update basic information with first name and / or last name contains special characters
+    @{current_basic_infor}=    Settings.Get All Basic Information
+    @{input_values}=    Create List    ${v_data[${v_testcaseID}]['first name']}    ${v_data[${v_testcaseID}]['last name']}    ${EMPTY}    ${EMPTY}    ${EMPTY}
+    ...    ${EMPTY}    ${EMPTY}    ${EMPTY}
+    Settings.Input All Basic Information    @{input_values}
+    Settings.Profile-Basic Information-Click Save button
+    Settings.Click Back Button
+    Settings.Profile-Navigates To Basic Information Screen
+    @{expected}=    Settings.Get All Basic Information
+    Lists Should Be Equal    ${current_basic_infor}    ${expected}    Current information '${current_basic_infor}' is different with expected information '${expected}'
+
+User can update basic information with all empty un-required fields
+    ${first_name}=    Set Variable    automation
+    ${last_name}=    Set Variable    test
+    Settings.Input All Basic Information    ${EMPTY}    ${EMPTY}    ${first_name}    ${last_name}    no    no
+    ...    08000    no
+    Settings.Profile-Basic Information-Click Save button
+    Settings.Current Screen Is Profile Screen
+    Settings.Profile-Navigates To Basic Information Screen
+    Settings.Input All Basic Information    ${first_name}    ${last_name}
+    Settings.Profile-Basic Information-Clear Basic Information    ${False}    ${False}    ${True}    ${True}    ${True}    ${True}
+    ...    ${True}    ${True}
+    @{current_basic_infor}=    Settings.Get All Basic Information
+    Settings.Profile-Basic Information-Click Save button
+    Settings.Current Screen Is Profile Screen
+    Settings.Profile-Navigates To Basic Information Screen
+    @{expected}=    Settings.Get All Basic Information
+    Lists Should Be Equal    ${current_basic_infor}    ${expected}    Current information '${current_basic_infor}' is different with expected information '${expected}'
+
+Verify first screen of User Guide - Games
+    UserGuideGames.Verify 1st wizard screen    ${v_data[${v_testcaseID}]['${v_language}-user guide games text1']}    ${v_data[${v_testcaseID}]['${v_language}-user guide games text2']}    ${v_data[${v_testcaseID}]['${v_language}-user guide games text3']}    ${v_data[${v_testcaseID}]['${v_language}-user guide games text4']}
+
+Check UI of Change Password screen
+    Common Keywords.Wait Until Page Contains Element    ${Settings_Access_Password_Title}    ${v_timeout}    'Title' couldn't be found on Change Password screen
+    Common Keywords.Wait Until Page Contains Element    ${Settings_Access_Password_CurrentPassword}    ${v_timeout}    'Current Password textfield' couldn't be found on Change Password screen
+    Common Keywords.Wait Until Page Contains Element    ${Settings_Access_Password_Description}    ${v_timeout}    'Description' couldn't be found on Change Password screen
+    Common Keywords.Wait Until Page Contains Element    ${Settings_Access_Password_NewPassword}    ${v_timeout}    'New Password textfield' couldn't be found on Change Password screen
+    Common Keywords.Wait Until Page Contains Element    ${Settings_Access_Password_PasswordConfirmation}    ${v_timeout}    'Password Confirmation textfield' couldn't be found on Change Password screen
+    Common Keywords.Wait Until Page Contains Element    ${Settings_Access_Password_SubmitButton}    ${v_timeout}    'Submit button' couldn't be found on Change Password screen
+    AppiumLibrary.Element Name Should Be    ${Settings_Access_Password_Title}    ${v_data[${v_testcaseID}]['${v_language}-title']}
+    AppiumLibrary.Element Name Should Be    ${Settings_Access_Password_SubmitButton}    ${v_data[${v_testcaseID}]['${v_language}-submit button']}
+    AppiumLibrary.Element Name Should Be    ${Settings_Access_Password_Description}    ${v_data[${v_testcaseID}]['${v_language}-description']}
+    ${value}=    AppiumLibrary.Get Element Attribute    ${Settings_Access_Password_CurrentPassword}    value
+    Should Be Equal As Strings    ${value}    ${v_data[${v_testcaseID}]['${v_language}-current password']}    Default value of 'Current Password' textfield should be '${v_data[${v_testcaseID}]['${v_language}-current password']}' but it is '${value}'
+    ${value1}=    AppiumLibrary.Get Element Attribute    ${Settings_Access_Password_NewPassword}    value
+    Should Be Equal As Strings    ${value1}    ${v_data[${v_testcaseID}]['${v_language}-new password']}    Default value of 'New Password' textfield should be '${v_data[${v_testcaseID}]['${v_language}-new password']}' but it is '${value}'
+    ${value2}=    AppiumLibrary.Get Element Attribute    ${Settings_Access_Password_PasswordConfirmation}    value
+    Should Be Equal As Strings    ${value2}    ${v_data[${v_testcaseID}]['${v_language}-password confirmation']}    Default value of 'Password Confirmation' textfield should be '${v_data[${v_testcaseID}]['${v_language}-password confirmation']}' but it is '${value}'
+
+Input new password on Change Pasword screen
+    Settings.Password - Input New Password    ${v_data[${v_testcaseID}]['new password']}
+
+Checking password before change password
+    ${result}=    Run Keyword And Return Status    APIs.Log In    ${v_data[${v_testcaseID}]['email address']}    ${v_data[${v_testcaseID}]['password']}
+    ${temp}=    Set Variable    ${v_data[${v_testcaseID}]['password']}
+    Run Keyword If    ${result}==False    Set Test Variable    ${v_data[${v_testcaseID}]['password']}    ${v_data[${v_testcaseID}]['new password']}
+    Run Keyword If    ${result}==False    Set Test Variable    ${v_data[${v_testcaseID}]['current password']}    ${v_data[${v_testcaseID}]['new password']}
+    Run Keyword If    ${result}==False    Set Test Variable    ${v_data[${v_testcaseID}]['new password']}    ${temp}
+    Run Keyword If    ${result}==False    Set Test Variable    ${v_data[${v_testcaseID}]['password confirmation']}    ${temp}
