@@ -11,12 +11,12 @@ def input_data ():
             print "Invalid number"
     return data
 
-def split_array (array):
-    final_array = [array[0], array[len(array)-1]]
+def slice_array (array):
+    final_array = array[::2]
     return final_array
 
 if __name__ == "__main__":
     temp_array = []
     temp_array = input_data()
-    temp_array = split_array(temp_array)
+    temp_array = slice_array(temp_array)
     print temp_array
